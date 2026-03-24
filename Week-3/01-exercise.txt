@@ -1,0 +1,65 @@
+1. Cree un pseudocódigo que le pida un `precio de producto` al usuario, calcule su descuento y muestre el precio final tomando en cuenta que:
+    1. Si el precio es menor a 100, el descuento es del 2%.
+    2. *Ejemplos*:
+        1. 120 → 108
+        2. 40 → 39.2
+
+Respuesta:
+
+1. Si el precio es mayor o igual a 100, el descuento es del 10%.
+2. Inicio
+3. Definir `precio_del_producto`
+4. Definir `precio_final` 
+5. Mostrar “Cual es el  precio del producto”
+6. Pedir `precio_del_producto`
+7. Si (`precio_del_producto` <100) entonces:
+    1. `precio_final` =`precio_del_producto`  * 0.98
+8. Sino:
+    1. `precio_final` =`precio_del_producto` * 0.90
+9. FinSi
+10. Mostrar “El precio con descuento es de”
+11. Mostrar `precio_final` 
+12. Fin
+
+"""
+    ┌─────────────────────────┐
+    │ ¿Cuál es el precio del  │
+    │      producto?          │
+    └───────────┬─────────────┘
+                │
+                ▼
+    ┌─────────────────────────┐
+    │  Precio del producto    │
+    └───────────┬─────────────┘
+                │
+                ▼
+         ┌──────────────┐
+         │ ¿Precio del  │
+         │ producto<100?│
+         └──────┬───────┘
+                │
+        ┌───────┴───────┐
+        │               │
+     Falso           Verdadero
+        │               │
+        ▼               ▼
+┌───────────────┐   ┌───────────────┐
+│ precio_final  │   │ precio_final  │
+│ precio_del_   │   │ precio_del_   │
+│ producto*0.90 │   │ producto*0.98 │
+└───────┬───────┘   └───────┬───────┘
+        │               │
+        └───────┬───────┘
+                │
+                ▼
+    ┌─────────────────────────┐
+    │ "El precio con          │
+    │  descuento es de"       │
+    │  +precio_final+         │
+    └───────────┬─────────────┘
+                │
+                ▼
+           ┌────────┐
+           │  Fin   │
+           └────────┘
+"""

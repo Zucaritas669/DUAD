@@ -1,0 +1,39 @@
+1️-Exercises Lyfter
+
+Qué cambió:
+Se agregaron o modificaron ejercicios relacionados con la academia Lyfter.
+
+Por qué se hizo el cambio:
+Para actualizar el repositorio con nuevos ejercicios o avances recientes del curso.
+
+2️-Week 5
+
+Qué cambió:
+Se añadieron o actualizaron archivos correspondientes a la semana 5.
+
+Por qué se hizo el cambio:
+Para organizar el contenido por semanas y mantener el progreso estructurado.
+
+3️-More Practice
+
+Qué cambió:
+Se agregaron ejercicios adicionales de práctica.
+
+Por qué se hizo el cambio:
+Para reforzar conocimientos y practicar más allá del contenido principal.
+
+4️-Exercises week4
+
+Qué cambió:
+Se añadieron o modificaron ejercicios de la semana 4.
+
+Por qué se hizo el cambio:
+Para continuar con la estructura progresiva del curso por semanas.
+
+5-Exercises week 2
+
+Qué cambió:
+Se agregaron o actualizaron ejercicios de la semana 2.
+
+Por qué se hizo el cambio:
+Para subir avances correspondientes a esa semana y mantener el repositorio actualizado.

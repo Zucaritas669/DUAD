@@ -1,0 +1,31 @@
+1. Cree un algoritmo para ver un video en Youtube. Sea lo más especifico posible.
+
+Respuesta:
+
+1. Inicio
+    1. Preparar el setup 
+    2. Prender la PC
+        1. Tomar la regleta y conectarla 
+        2. Preparar periféricos 
+            1. Tomar los periféricos
+            2. Conectarlos al PC
+2. Abrir Youtube
+    1. Elegir el navegador 
+    2. Si le gusta el navegador  por default :
+        1. Usar este navegador para reproducir el video
+        
+        Sino:
+        
+        1. Elegir el navegador de preferencia
+3. Elegir video
+    1. Si tiene creador de contenido favorito:
+        1. Buscar en el navegador al creador de contenido que desea ver 
+        
+        Sino:
+        
+        1. Ver lo que el algoritmo recomienda 
+4. Sino quiere ver vides
+    1. Ver la categoría Shorts
+        1. Hacer scrolldown, hasta que aparezca algo de su agrado 
+5. Dejar cometario y like
+6. Fin

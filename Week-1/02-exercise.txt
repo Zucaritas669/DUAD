@@ -1,0 +1,39 @@
+1. Cree un algoritmo que describa su rutina diaria. Use condiciones, condiciones multiples y ciclos.
+
+Respuesta:
+
+1. Inicio .
+2. Desayunar .
+    1. Hacer batido de frutas.
+        1. Si tiene banano y fresas.
+            1. Hacer batido. 
+        2. Sino, si tiene blueberry o cranberries .
+            1. Hacer batido. 
+        3. Sino:
+            1. Hacer tostada.
+3. Lavarse los dientes .
+    1. Tomar el cepillo de dientes.
+        1. Si está guardado en el bolso del trabajo
+            1. Buscar en el bolso del trabajo
+        2. Sino:
+            1. Aplicar la pasta y enjuage bucal
+4. Bañarse.
+5. Alistarse.
+    1. Si dejé el uniforme listo la noche anterior:
+        1. Ponerse ese uniforme 
+    2. Sino hay uniforme listo:
+        1. Debe de buscar uno 
+6. Salir de casa.
+    1. Si la moto tiene gasolina
+        1. Ir en moto
+    2. Sino , si el carro tiene gasolina 
+        1. Ir en el carro 
+    3. Si ninguno de los 2 tienen gasolina
+        1. Ir en taxi 
+7. Hacer Tareas de Inglés y Lyfter.
+    1.  Si hay tarea de inglés:
+        1. Mientras la tarea esté incompleta:
+            1. Hacer tarea de inglés 
+    2. Si hay tarea de Lyfter:
+        1. Hacer Academy lyfter 
+8. Fin.

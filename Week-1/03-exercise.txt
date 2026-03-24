@@ -1,0 +1,80 @@
+1. Cree un algoritmo como preparar una fiesta sorpresa para un amigo o familiar. Considere si la persona está en casa o no, si los invitados ya llegaron o no, qué hacer mientras esperan, y cómo finaliza la fiesta
+
+Respuesta:
+
+1. Inicio 
+2. Cumpleañero
+    1. Si la fiesta es en la casa del cumpleañero:
+        1. Buscar un cómplice para lo saque de la casa y no sospeche
+    2. Sino, si es en casa de alguien más:
+        1. Seguir con el plan
+    
+3. Invitación 
+    1. Enviar invitación a todos los familiares/amigos del cumpleañero
+        1. Si los invitados no tienen whatsapp:
+            1. Usar instagram
+        2. Sino, si tiene  facebook o algún otro social media:
+            1. Usar este 
+        3. Sino:
+            1. Buscarlos personalmente y decirles
+            
+4. Comida
+    1. Planear que se les va a dar de comer a los invitados
+        1. Planear plato fuerte , entrada y postre
+            1. En que servir la comida y bebidas 
+            2. Alcohol y otros
+    2. Si se desea contratar un catering service
+        1. Buscar recomendaciones por internet o social media
+    3. Sino, si se va a cocinar:
+        1. tener presente todo los ingredientes que se ocupan
+            1. Si se tienen los ingredientes:
+            Cocinar la comida 
+            2. Sino:
+                1. Hacer una lista de que se cupa e ir al super mercado y obtenerlos 
+    4. Sino se decidió nada:
+        1. Comprar pizza para los invitados y el pastel 
+        
+5. Invitados
+    1. Si todos los invitados ya llegaron:
+        1. Proseguir con las actividades
+    2. Sino:
+        1. Esperar a que todos lleguen 
+        
+6. Actividades mientras el cumpleañero no está
+    1. Karaoke
+        1. tener un micrófono 
+            1. Si se tiene:
+                1.  uno seguir con el plan 
+            2. Sino:
+                1. Comprar uno 
+        2. Tener un parlante o equipo de sonido 
+        3. Tener una pantalla
+        4. Tener una playlist lista
+            1. Buscar en Spotify 
+                1. Si se encuentra una del agrado:
+                    1. Usar esta playlist
+                2. Sino:
+                    1. Buscar canciones populares y fáciles para hacer karaoke y hacerla uno  mismo 
+                3. Sino:
+                    1. Peguntar a algún conocido si tiene
+    2. Esperar la llegada del cumpleañero
+        1. Apagar las luces 
+        2. Todos esconderse 
+        3. apagar la música
+        4. No hacer ruido
+    
+7. Llegada del cumpleañero
+    
+    
+8. Fin de la fiesta 
+    1. Cantar cumpleaños 
+        1. Juntar a todos y cantar la cancón Feliz Cumpleaños
+        2. Repartir el Pastel 
+            1. Buscar un cuchillo
+                1. Tomar el cuchillo y cortarlo 
+        3. Servirlo 
+            1. Buscar los platos
+                1. Tomar lo platos
+                2. Servir el pastel 
+        4. Comer el pastel 
+9. Fins

@@ -1,0 +1,44 @@
+Cree un diagrama de flujo que tenga un numero secreto del 1 al 10, 
+y le pida al usuario adivinar ese número. El algoritmo no debe terminar 
+hasta que el usuario adivine el numero."""
+                    ╔═══════════════════════╗
+                    ║        Inicio         ║
+                    ╚═══════════╦═══════════╝
+                                ║
+                                ▼
+                    ┌───────────────────────┐
+                    │  Definir numero       │
+                    │    secreto =7         │
+                    │ Definir intento usuario│
+                    └───────────┬───────────┘
+                                │
+                                │
+                                │       ╱───────────────────────╲
+                                └──────►  Mientras que:          ╲
+                                   ┌───╱ intento usuario !=      ╲
+                                   │  ╱    numero secreto         ╲
+                                   │  ╲                           ╱
+                                   │   ╲───────────┬─────────────╱
+                                   │               │
+                                   │  ┌────────────┴────────────┐
+                                   │  │                         │
+                                   │verdadero                 falso
+                                   │  │                         │
+                                   │  ▼                         ▼
+                                   │┌─────────────────────┐   ┌─────────────────────┐
+                                   ││ "Adivina el número  │   │ "Adivinaste el      │
+                                   ││     secreto"        │   │     número"         │
+                                   │└──────────┬──────────┘   └──────────┬──────────┘
+                                   │           │                         │
+                                   │           ▼                         │
+                                   │┌─────────────────────┐             │
+                                   ││  intento usuario    │             │
+                                   │└──────────┬──────────┘             │
+                                   │           │                         │
+                                   └───────────┘                         │
+                                                                         │
+                                                                         ▼
+                                                                  ╔═══════════╗
+                                                                  ║    Fin    ║
+                                                                  ╚═══════════╝
+""" 
