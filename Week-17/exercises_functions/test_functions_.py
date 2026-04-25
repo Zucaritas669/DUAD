@@ -1,5 +1,5 @@
 import pytest
-from functions_exercises import sum_of_list, reverse_text, count_capital_letter, sort_hyphenated_string, get_prime_numbers
+from functions_exercises_ import sum_of_list, reverse_text, count_capital_letter, sort_hyphenated_string, get_prime_numbers
 
 
 # ─── 1. sum_of_list ───────────────────────────────────────────────

@@ -1,5 +1,5 @@
 import pytest
-from bubble_sort import bubble_sort
+from bubble_sort_ import bubble_sort
 
 def test_small_list():
     #AAA

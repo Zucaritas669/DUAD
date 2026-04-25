@@ -1,6 +1,6 @@
 from unittest.mock import mock_open, patch
 import pytest
-from mock_exercise import read_file_lines
+from mock_exercise_ import read_file_lines
 
 def test_read_file_returns_expected_lines():
     #Arrange
@@ -20,7 +20,7 @@ def test_read_file_raises_error_if_not_found():
     mock = mock_open()
     mock.side_effect = FileNotFoundError
 
-    #Act & Assert
+    #Act #Assert
     with patch("builtins.open", mock):
         with pytest.raises(FileNotFoundError):
             read_file_lines("archivo_inexistente.txt")

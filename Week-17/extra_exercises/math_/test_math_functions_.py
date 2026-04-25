@@ -1,5 +1,5 @@
 import pytest
-from math_functions import sum_numbers,average,absolute_value
+from math_functions_ import sum_numbers,average,absolute_value
 
 def test_sum_positive_numbers():
     #AAA
