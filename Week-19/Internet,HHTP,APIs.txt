@@ -1,0 +1,197 @@
+1. Del Cliente al Servidor 💻 → 💻
+
+Explique paso a paso qué ocurre cuando usted escribe www.youtube.com en el navegador hasta que el video aparece en pantalla.
+Debe incluir en su explicación:
+
+
+1.Qué hace el cliente (navegador).
+-> El cliente hace un request a un DNS (Domain Name System)
+
+
+
+2.Qué papel cumple el DNS.
+-> El DNS es el enargado de "traducir" o "interpretar" los domain names a direcciones Y da un response con el IP público
+
+
+3.Qué ocurre con la dirección IP.
+el cliente usa la IP retornada por el DNS para conectarse al servidor
+
+
+
+4.Qué hace el servidor.
+-> El servidor retorna un response con el request previamente hecho
+
+
+5.Cómo entra en juego el protocolo HTTP/HTTPS.
+El navegador usa la IP para conectarse al servidor, y esa conexión la hace mediante HTTP o HTTPS
+
+
+
+
+
+2. Frontend y Backend en acción 🧩
+Suponga que está construyendo una app web para agendar citas médicas.
+
+1-Indique qué parte del sistema correspondería al frontend y cuál al backend.
+->Frontend: Todo lo que el usurio vería en pantalla, diseño , colores , botones
+->Backend: Todo lo relacionado con el CRUD(Añadir cita, Ver citas, Eliminar cita .... ), base de datos, APIs
+
+
+2-Mencione tres tecnologías posibles para cada uno.
+->Frontend: JS(Javascript), HTML, CSS
+->Backend: El lenguaje de programación deseado(en este caso python), Data bases, Framework
+
+
+3-Explique brevemente cómo el frontend se comunicaría con el backend (mencione los conceptos de API, HTTP y request/response).
+-> "El frontend se comunica con el backend mediante HTTP — cuando el usuario hace una acción, 
+el frontend envía un HTTP request a un API del backend. El backend procesa ese request y retorna un HTTP response con el resultado."
+
+
+
+
+3. REST vs SOAP vs GraphQL ⚙️
+Comparar estas opciones según formato de datos, flexibilidad, dificultad de implementación y uso actual, para entender cuándo conviene cada una.
+Cómo completar la tabla:
+    Usa términos concisos (p. ej., “JSON/XML” en formato de datos).
+    En “nivel de flexibilidad”, piensa: ¿quién controla mejor lo que se envía/recibe, cliente o servidor?
+    En “dificultad de implementación”, considera curva de aprendizaje, herramientas y mantenimiento.
+    En “uso actual”, valora su presencia en proyectos modernos (Alta/Media/Baja).
+    Complete la siguiente tabla
+
+    Tipo de API | Formato de datos usado | Nivel de flexibilidad | Dificultad de implementación     | Uso actual (Alta / Media / Baja)
+REST            |          JSON          |MUY FLEXIBLES,servidor |           BAJA                   |               ALTA
+SOAP            |          XLM           |    POCO FLEXIBLES     |        AlTA DIFICULTAD           |               BAJA
+GraphQL         |          JSON          |MUY FLEXIBLES,cliente  |MEDIA(FLEXIBLE,PERO CURVA DIFICIL)|               MEDIA
+
+¿Cuál considera más apropiada para una startup moderna que desarrolla un sistema de reservas en línea? ¿Por qué?
+-> Considero que REST es la mejor de las opciones debido a que es el "Standard" en, adémas como apreciamos en la tabla , este es el que 
+la mejor opcion si nos ponemos a comprar todos sus pros y contras 
+
+
+4. Explorando APIs con Postman🧪
+Parte 1: Selección de la API 🧩
+
+Nombre: PokeAPI
+Descripción: API pública y gratuita que provee información sobre 
+el universo Pokémon — pokémons, movimientos, habilidades, tipos y más.
+URL base: https://jsonplaceholder.typicode.com
+
+
+
+
+Parte 2: Configuración en Postman ⚙️
+Crea una nueva colección en Postman con el nombre de la API.
+Agrega al menos 3 tipos de solicitudes:
+
+GET → obtener información (por ejemplo, lista o detalle de un elemento).
+-> https://jsonplaceholder.typicode.com/users
+
+POST → enviar datos (por ejemplo, crear un recurso)
+-> https://jsonplaceholder.typicode.com/users
+   Body: { "name": "Shalston López", "email": "shalston97@gmail.com", "phone": "8434-2271" }
+
+PUT/PATCH o DELETE → actualizar o eliminar un recurso (si la API lo permite).
+-> https://jsonplaceholder.typicode.com/users/2
+
+Si la API usa parámetros o tokens, configura las variables necesarias en la pestaña Environment.
+
+
+
+Parte 3: Ejecución y análisis 🔍
+Ejecuta cada solicitud y verifica:
+Código de estado (200, 404, 500, etc.).
+Cuerpo de la respuesta (JSON o texto).
+Headers relevantes (por ejemplo: Content-Type, Authorization).
+Guarda las respuestas en tu colección.
+
+
+
+1. GET - Obtener usuarios
+   - Código de estado: 200 
+   - Cuerpo de respuesta: JSON con lista de usuarios
+   - Header relevante: Content-Type: application/json
+
+2. POST - Crear usuario
+   - Código de estado: 201 
+   - Cuerpo de respuesta: JSON con los datos enviados + id: 11 asignado por el servidor
+   - Header relevante: Content-Type: application/json
+
+3. DELETE - Eliminar usuario
+   - Código de estado: 200 
+   - Cuerpo de respuesta: {} (vacío, el recurso fue eliminado)
+   - Header relevante: Content-Type: application/json
+
+
+
+Parte 4: Explicación técnica 🧠
+Crea un archivo README.md (o documento de texto) que incluya:
+Descripción general de la API elegida.
+Explicación de cada solicitud:
+Método HTTP usado.
+Endpoint.
+Parámetros o cuerpo de la solicitud.
+Descripción breve de la respuesta.
+Ejemplo de código o fragmento JSON con la respuesta.
+Qué aprendiste del proceso.
+
+   #
+
+1. Descripción general
+JSONPlaceholder es una API REST pública y gratuita para pruebas y prototipos.
+No requiere autenticación. Simula operaciones CRUD sin modificar datos reales.
+URL base: https://jsonplaceholder.typicode.com
+
+2. Solicitudes
+
+ GET - Obtener usuarios
+- Método: GET
+- Endpoint: /users
+- Parámetros: ninguno
+- Respuesta: lista de 10 usuarios en formato JSON
+
+POST - Crear usuario
+- Método: POST
+- Endpoint: /users
+- Cuerpo:
+  {
+    "name": "Shalston López",
+    "email": "shalston97@gmail.com",
+    "phone": "8434-2271"
+  }
+- Respuesta: objeto creado con id asignado por el servidor
+
+DELETE - Eliminar usuario
+- Método: DELETE
+- Endpoint: /users/2
+- Parámetros: id del usuario en la URL
+- Respuesta: {} 
+
+
+3. Ejemplo de respuesta JSON (POST)
+{
+  "name": "Shalston López",
+  "email": "shalston97@gmail.com",
+  "phone": "8434-2271",
+  "id": 11
+}
+
+4. Qué aprendí
+- Cómo hacer requests HTTP usando Postman
+- La diferencia entre GET, POST y DELETE
+- Qué significan los códigos de estado 
+- Cómo el frontend se comunica con el backend mediante APIs
+- Que APIs de prueba como JSONPlaceholder simulan
+  operaciones sin modificar datos reales
+
+
+
+Parte 5: Reflexión final 🧭
+En 1 o 2 párrafos, responde:
+¿Qué aprendiste sobre el funcionamiento de las APIs?
+-> He aprendido  que es un "intermediario" por así decir entre  el backend y frontend,
+y gracias a esto he comprendido el funcionamiento, de las apps en general y el desarrollo de software
+
+gud 
+
+¿Cómo te ayudó Postman a entender la comunicación entre cliente y servidor?
+-> Pude observar de como funcionan y fui capaz de entender el alcance de los APIs
