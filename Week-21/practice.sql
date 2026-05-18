@@ -41,28 +41,27 @@ Obtenga todas las compras agrupadas por producto, donde se muestre el total comp
 Obtenga todas las facturas realizadas por el mismo comprador
 
 
-# SELECT user_id ,COUNT (ID), SUM (total_amount)
+# SELECT *
 # FROM invoices
-# GROUP BY user_id
+# WHERE user_id = 1;
 
 
-# ========================= 7 =====================
+# ========================= 6 =====================
 
 Obtenga todas las facturas ordenadas por monto total de forma descendente
 
 # SELECT *
 # FROM invoices
-# ORDER BY user_id DESC;
+# ORDER BY total_amount DESC;
 
 
-# ========================= 8 =====================
+# ========================= 7 =====================
 
 Obtenga una sola factura por número de factura.
 
-# SELECT *
-# FROM invoices
-# GROUP BY invoice_number;
-
+# SELECT * 
+#FROM invoices
+#WHERE invoice_number = 1001;
 
 
 
@@ -148,7 +147,7 @@ Seleccione productos cuyo product_name contenga la palabra “apple” usando LI
 
 #SELECT name
 #FROM products
-#WHERE name like 'apple';
+#WHERE name like '%apple%';
 
 
 
@@ -156,7 +155,8 @@ Liste los 5 productos más caros con ORDER BY price DESC LIMIT 5
 
 #SELECT name , price
 #FROM products
-#ORDER BY price DESC;
+#ORDER BY price DESC
+#LIMIT 5;
 
 
 
@@ -166,7 +166,7 @@ Liste los 5 productos más caros con ORDER BY price DESC LIMIT 5
 
 Establezca stock_available = 0 donde price <= 0
 
-#UPDATE product
+#UPDATE products
 #SET stock_available = 0 
 #WHERE price <= 0 ;
 
@@ -174,7 +174,7 @@ Establezca stock_available = 0 donde price <= 0
 
 Aumente el price en 100 unidades para todos los productos cuando stock_available sea menor a 10
 
-#UPDATE product
+#UPDATE products
 #SET price = price + 100
 #WHERE stock_available < 10 ;
 
