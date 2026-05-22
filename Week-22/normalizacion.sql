@@ -148,3 +148,185 @@ https://drawsql.app/teams/shalston/diagrams/normalizacion-2
 
 
 
+
+
+======================================================================
+
+                        Normalización extra #1
+
+======================================================================
+
+EmployeeID	Employee Name	Department	Department Phone	Project ID	Project Name	Project Budget
+201	        Ana Rivera	    IT	        2222-2222	        P001	    Web App	        50000
+201	        Ana Rivera	    IT	        2222-2222	        P002	    API REST	    25000
+202	        Luis Mendez	    Marketing	1111-1111	        P003	    Campaña TV	    30000
+
+
+
+-- ======================================================================
+--         1FN: Se define PK compuesta (Employee_ID, Project_ID)
+-- ======================================================================
+
+-- Employee_ID (PK) | Project_ID (PK) | Employee_Name | Department | Department_Phone | Project_Name | Project_Budget
+-- 201              | P001            | Ana Rivera    | IT         | 2222-2222        | Web App      | 50000
+-- 201              | P002            | Ana Rivera    | IT         | 2222-2222        | API REST     | 25000
+-- 202              | P003            | Luis Mendez   | Marketing  | 1111-1111        | Campaña TV   | 30000
+
+-- ======================================================================
+--         2FN: Se separan Employees, Departments, Projects y Employee_projects
+-- ======================================================================
+
+-- Employees
+-- Employee_ID (PK) | Employee_Name | Department       | Department_Phone
+-- 201              | Ana Rivera    | IT               | 2222-2222
+-- 202              | Luis Mendez   | Marketing        | 1111-1111
+--
+-- Projects
+-- Project_ID (PK) | Project_Name | Project_Budget
+-- P001            | Web App      | 50000
+-- P002            | API REST     | 25000
+-- P003            | Campaña TV   | 30000
+--
+-- Employee_projects
+-- Employee_ID (FK) | Project_ID (FK)
+-- 201              | P001
+-- 201              | P002
+-- 202              | P003
+
+-- ======================================================================
+--         3FN: Se separa Departments de Employees
+-- ======================================================================
+
+-- Departments
+-- id (PK) | Department_Name | Department_Phone
+-- 1       | IT              | 2222-2222
+-- 2       | Marketing       | 1111-1111
+--
+-- Employees 
+-- id (PK) | Employee_Name | Department_ID (FK)
+-- 1       | Ana Rivera    | 1
+-- 2       | Luis Mendez   | 2
+
+
+https://drawsql.app/teams/shalston/diagrams/normalizacion-extra-1
+
+
+======================================================================
+
+                        Normalización extra #2
+
+======================================================================
+
+StudentID	Student Name	CourseCode	CourseName	InstructorName	InstructorEmail
+301	        Marco Gómez	    CS101	    Python I	Juan Pérez	    juan@uni.edu
+301	        Marco Gómez	    CS102	    Python II	Laura Rojas	    laura@uni.edu
+302	        Carla Ruiz	    CS101	    Python I	Juan Pérez	    juan@uni.edu
+
+
+-- ======================================================================
+--         1FN: Se define PK compuesta (Student_ID, Course_Code)
+-- ======================================================================
+
+-- Student_ID (PK) | Course_Code (PK) | Student_Name | Course_Name | Instructor_Name | Instructor_Email
+-- 301             | CS101            | Marco Gómez  | Python I    | Juan Pérez      | juan@uni.edu
+-- 301             | CS102            | Marco Gómez  | Python II   | Laura Rojas     | laura@uni.edu
+-- 302             | CS101            | Carla Ruiz   | Python I    | Juan Pérez      | juan@uni.edu
+
+-- ======================================================================
+--         2FN: Se separan Students, Courses y Student_courses
+-- ======================================================================
+
+-- Students
+-- Student_ID (PK) | Student_Name
+-- 301             | Marco Gómez
+-- 302             | Carla Ruiz
+--
+-- Courses
+-- Course_Code (PK) | Course_Name | Instructor_Name | Instructor_Email
+-- CS101            | Python I    | Juan Pérez      | juan@uni.edu
+-- CS102            | Python II   | Laura Rojas     | laura@uni.edu
+--
+-- Student_courses
+-- Student_ID (FK) | Course_Code (FK)
+-- 301             | CS101
+-- 301             | CS102
+-- 302             | CS101
+
+-- ======================================================================
+--         3FN: Se separan Instructors de Courses
+-- ======================================================================
+
+-- Instructors
+-- id (PK) | Instructor_Name | Instructor_Email
+-- 1       | Juan Pérez      | juan@uni.edu
+-- 2       | Laura Rojas     | laura@uni.edu
+--
+-- Courses 
+-- id (PK) | Course_Code | Course_Name
+-- 1       | CS101       | Python I
+-- 2       | CS102       | Python II
+--
+-- instructor_courses
+-- id (PK) | instructor_id (FK) | course_id (FK)
+-- 1       | 1                  | 1
+-- 2       | 2                  | 2
+
+
+https://drawsql.app/teams/shalston/diagrams/normalizacion-extra-2
+
+
+
+
+
+======================================================================
+
+                        Normalización extra #3
+
+======================================================================
+
+Appointment ID	Patient Name	Patient Phone	Doctor Name	    Specialty	Date	    Time
+A01     	    Diana Vargas	8888-1111	    Dr. Soto	    Pediatría	2024-08-01	10:00 AM
+A02	            Diana Vargas	8888-1111	    Dr. Soto	    Pediatría	2024-08-10	10:00 AM
+A03	            Edwin Mora	    8999-2222	    Dr. Mora	    Cardiología	2024-08-05	01:00 PM
+
+
+-- ======================================================================
+--         1FN: PK Appointment_ID
+-- ======================================================================
+-- Justificación: Appointment_ID no se repite, identifica cada fila únicamente.
+
+-- ======================================================================
+--         2FN: Cumple automáticamente
+-- ======================================================================
+-- Justificación: la PK es simple, no compuesta.
+
+-- ======================================================================
+--         3FN: Se separan Patients, Doctors y Specialties
+-- ======================================================================
+
+-
+-- Patients
+-- id | patient_name | patient_phone
+-- 1  | Diana Vargas | 8888-1111
+-- 2  | Edwin Mora   | 8999-2222
+--
+-- Doctors
+-- id | doctor_name
+-- 1  | Dr. Soto
+-- 2  | Dr. Mora
+--
+-- Specialties
+-- id | specialty_name
+-- 1  | Pediatría
+-- 2  | Cardiología
+--
+-- Doctor_specialties
+-- id | doctor_id | specialty_id
+-- 1  | 1         | 1
+-- 2  | 2         | 2
+--
+-- Appointments
+-- id | date       | time     | patient_id | doctor_id
+-- 1  | 2024-08-01 | 10:00 AM | 1          | 1
+-- 2  | 2024-08-10 | 10:00 AM | 1          | 1
+-- 3  | 2024-08-05 | 01:00 PM | 2          
