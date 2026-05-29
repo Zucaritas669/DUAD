@@ -1,0 +1,137 @@
+¿Qué es SELECT?
+SELECT es el comando SQL usado para consultar y recuperar datos de una o más tablas 
+en una base de datos. Se puede combinar con varias cláusulas para 
+filtrar, ordenar, agrupar y limitar los resultados.
+
+
+-------------------------------------------------------
+ 1. ORDER BY
+-------------------------------------------------------
+ Que hace     : Ordena los resultados segun una o mas
+                columnas.
+ Opciones     : ASC (ascendente, default) / DESC (desc.)
+ Ejemplo      : SELECT nombre FROM empleados
+                ORDER BY nombre ASC;
+ Nota         : Siempre combinarlo con LIMIT para que
+                los resultados sean predecibles.
+-------------------------------------------------------
+ 
+-------------------------------------------------------
+ 2. LIMIT
+-------------------------------------------------------
+ Que hace     : Restringe cuantas filas devuelve la
+                consulta.
+ Equivalentes : TOP (SQL Server) / ROWNUM (Oracle)
+ Ejemplo      : SELECT nombre FROM empleados
+                ORDER BY salario DESC LIMIT 5;
+ Nota         : Si la tabla tiene menos filas que el
+                numero indicado, devuelve todas sin error.
+-------------------------------------------------------
+ 
+-------------------------------------------------------
+ 3. GROUP BY
+-------------------------------------------------------
+ Que hace     : Agrupa filas con el mismo valor en una
+                columna para aplicar funciones de
+                agregacion.
+ Se usa con   : COUNT(), SUM(), AVG(), MAX(), MIN()
+ Ejemplo      : SELECT departamento, COUNT(*)
+                FROM empleados
+                GROUP BY departamento;
+ Nota         : Toda columna en SELECT que no sea
+                funcion de agregacion debe ir en
+                GROUP BY. Para filtrar grupos se usa
+                WHERE.
+-------------------------------------------------------
+ 
+========================================================
+ TIPOS DE JOIN
+========================================================
+
+-------------------------------------------------------
+ INNER JOIN
+-------------------------------------------------------
+ Devuelve     : Solo filas con coincidencia en AMBAS
+                tablas.
+ Sin coincid. : Son excluidas del resultado.
+ Caso de uso  : Solo te interesan registros que existen
+                en las dos tablas.
+                Ej: ventas con nombre del producto.
+ Ejemplo      : SELECT e.nombre, d.nombre
+                FROM empleados e
+                INNER JOIN departamentos d
+                ON e.dept_id = d.id;
+-------------------------------------------------------
+ 
+-------------------------------------------------------
+ LEFT JOIN  (LEFT OUTER JOIN)
+-------------------------------------------------------
+ Devuelve     : TODAS las filas de la tabla izquierda
+                + las coincidentes de la derecha.
+ Sin coincid. : Filas izquierdas aparecen con NULL en
+                columnas de la tabla derecha.
+ Caso de uso  : Quieres todos los registros del lado
+                izquierdo aunque no tengan pareja.
+                Ej: todos los empleados aunque no
+                tengan departamento asignado.
+ Ejemplo      : SELECT e.nombre, d.nombre
+                FROM empleados e
+                LEFT JOIN departamentos d
+                ON e.dept_id = d.id;
+-------------------------------------------------------
+ 
+-------------------------------------------------------
+ RIGHT JOIN  (RIGHT OUTER JOIN)
+-------------------------------------------------------
+ Devuelve     : TODAS las filas de la tabla derecha
+                + las coincidentes de la izquierda.
+ Sin coincid. : Filas derechas aparecen con NULL en
+                columnas de la tabla izquierda.
+ Caso de uso  : Quieres todos los registros del lado
+                derecho aunque no tengan pareja.
+                Ej: todos los departamentos aunque no
+                tengan empleados asignados.
+ Ejemplo      : SELECT e.nombre, d.nombre
+                FROM empleados e
+                RIGHT JOIN departamentos d
+                ON e.dept_id = d.id;
+-------------------------------------------------------
+
+
+========================================================
+ TABLA COMPARATIVA: LOS 3 JOINS
+========================================================
+ 
++-------------+------------------+------------------+----------------+
+| Tipo JOIN   | Filas sin        | Filas sin        | Coincidencias  |
+|             | coincid. (LEFT)  | coincid. (RIGHT) | (interseccion) |
++-------------+------------------+------------------+----------------+
+| INNER JOIN  | NO incluye       | NO incluye       | SI incluye     |
++-------------+------------------+------------------+----------------+
+| LEFT JOIN   | SI (NULL dcha.)  | NO incluye       | SI incluye     |
++-------------+------------------+------------------+----------------+
+| RIGHT JOIN  | NO incluye       | SI (NULL izq.)   | SI incluye     |
++-------------+------------------+------------------+----------------+
+
+
+========================================================
+ ORDEN DE EJECUCION INTERNO DEL SELECT
+========================================================
+ 
+  1. FROM      --> elige la(s) tabla(s) base
+  2. JOIN      --> combina tablas segun la condicion
+  3. WHERE     --> filtra filas individuales
+  4. GROUP BY  --> agrupa filas
+  5. HAVING    --> filtra grupos
+  6. SELECT    --> selecciona columnas a mostrar
+  7. ORDER BY  --> ordena el resultado
+  8. LIMIT     --> restringe la cantidad de filas
+ 
+========================================================
+ FUENTES
+========================================================
+ - PostgreSQL Docs: postgresql.org/docs/current/sql-select.html
+ - FreeCodeCamp: freecodecamp.org/news/understanding-sql-joins
+ - The Data School: thedataschool.co.uk
+ - DbSchema Blog: dbschema.com/blog/tutorials/sql-joins-explained
+========================================================
