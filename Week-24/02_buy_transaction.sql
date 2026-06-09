@@ -8,13 +8,21 @@
 
 
 
-DO  $$
-DECLARE 
-    v_stock INT;
+SET search_path TO transactions_pgsql;
+
+DO $$
+DECLARE
     v_user_exist INT;
-    v_bill_id INT ;
+    v_bill_id INT;
+    v_stock INT;
+    r RECORD;
+
+
+    v_items INT[][] := ARRAY[[1, 2], [2, 1], [3, 1]];
+    i INT;
 
 BEGIN
+    Verificar que el usuario existe
     SELECT COUNT(*) INTO v_user_exist
     FROM users
     WHERE id = 1;
@@ -23,49 +31,42 @@ BEGIN
         RAISE EXCEPTION 'El usuario no existe.';
     END IF;
 
-
-    SELECT stock INTO v_stock
-    FROM products
-    WHERE id = 1;
-
-    IF v_stock IS NULL OR v_stock < 1 THEN
-        RAISE EXCEPTION 'Stock insuficiente';
-    END IF;
-
-    SELECT stock INTO v_stock
-    FROM products
-    WHERE id = 2;
-
-    IF v_stock IS NULL OR v_stock < 1 THEN
-        RAISE EXCEPTION 'Stock insuficiente';
-    END IF;
-
-
-    SELECT stock INTO v_stock
-    FROM products
-    WHERE id = 3;
-
-    IF v_stock IS NULL OR v_stock < 1 THEN
-        RAISE EXCEPTION 'Stock insuficiente';
-    END IF;
-
+    Crear la factura
     INSERT INTO bill (user_id, status)
     VALUES (1, 'active')
     RETURNING id INTO v_bill_id;
 
-    BEGIN
-        INSERT INTO bill_items (bill_id, product_id, quantity)
-        VALUES (v_bill_id, 1, 2),
-                (v_bill_id, 2, 1);
+    -- validar stock e insertar items
+    FOR i IN 1..array_length(v_items, 1) LOOP
+        DECLARE
+            v_product_id INT := v_items[i][1];
+            v_quantity   INT := v_items[i][2];
+        BEGIN
+            -- Validar stock c
+            SELECT stock INTO v_stock
+            FROM products
+            WHERE id = v_product_id;
 
-        UPDATE products SET stock = stock - 2 WHERE id = 1;
-        UPDATE products SET stock = stock - 1 WHERE id = 2;
+            IF v_stock IS NULL OR v_stock < v_quantity THEN
+                RAISE EXCEPTION 'Stock insuficiente para el producto con id %', v_product_id;
+            END IF;
 
-        RAISE NOTICE 'Compra realizada. Factura ID: %', v_bill_id;
-    EXCEPTION
-        WHEN OTHERS THEN
-            RAISE NOTICE 'Error al procesar items: ', v_bill_id;
-    END;
+            -- Insertar item en la factura
+            INSERT INTO bill_items (bill_id, product_id, quantity)
+            VALUES (v_bill_id, v_product_id, v_quantity);
+
+            -- Descontar stock
+            UPDATE products
+            SET stock = stock - v_quantity
+            WHERE id = v_product_id;
+        EXCEPTION
+            WHEN OTHERS THEN
+                -- rollback
+                RAISE EXCEPTION 'Error al procesar producto %: %', v_product_id, SQLERRM;
+        END;
+    END LOOP;
+
+    RAISE NOTICE 'Compra realizada. Factura ID: %', v_bill_id;
 
 END;
 $$;
