@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "title": "Learn Flask",
+        "description": "Practice Flask",
+        "status": "In progress"
+    },
+    {
+        "id": 2,
+        "title": "Django",
+        "description": "Practice Django",
+        "status": "Not done"
+    },
+    {
+        "id": 3,
+        "title": "CSS",
+        "description": "Practice CSS",
+        "status": "Not done"
+    },
+    {
+        "id": 4,
+        "title": "HTML",
+        "description": "Practice HTML",
+        "status": "Done"
+    }
+]
