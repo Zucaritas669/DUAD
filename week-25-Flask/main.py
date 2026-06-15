@@ -34,7 +34,7 @@ def write_tasks(data):
 
 
 #___________This is how create a flask with a class ____________
-class Tasks():
+class Task():
 
     def __init__(self,id,title,description,status):
         self.id = id 
@@ -53,13 +53,7 @@ class Tasks():
         }
     
 
-@app.route("/get_tasks",methods =["GET"])
-def get_tasks():
-    tasks = read_tasks()
-    return {"Data":tasks},200
-
-
-@app.route("/filter_tasks", methods =["GET"])
+@app.route("/tasks", methods =["GET"])
 def get_filter_tasks():
     tasks = read_tasks()
     filter_tasks = request.args.get("status")
@@ -77,7 +71,7 @@ def get_filter_tasks():
 
 valid_status =["Not done", "In progress", "Done"]
 
-@app.route("/create_task",methods=["POST"])
+@app.route("/tasks",methods=["POST"])
 def create_task():
     try:
         if "id" not in request.json:
@@ -100,7 +94,7 @@ def create_task():
             if t["id"] == request.json["id"]:
                 raise ValueError("ID already exist")
             
-        new_task = Tasks(
+        new_task = Task(
             id = request.json["id"],
             title = request.json["title"],
             description= request.json["description"],
@@ -119,7 +113,7 @@ def create_task():
 
 
 
-@app.route("/delete_task/<int:task_id>", methods= ["DELETE"])
+@app.route("/tasks/<int:task_id>", methods= ["DELETE"])
 def delete_task(task_id):
 
     tasks_list = read_tasks()
@@ -130,29 +124,29 @@ def delete_task(task_id):
             write_tasks(tasks_list)
 
             return jsonify(message = "Task deleted successfully"),200
-    return jsonify(message = "Task not Found"),400
+    return jsonify(message = "Task not Found"),404
 
 
-@app.route("/edit_task/<int:task_id>",methods = ["PATCH"])
+@app.route("/tasks/<int:task_id>", methods=["PATCH"])
 def edit_task(task_id):
     tasks = read_tasks()
-    for t in tasks:
-        
-        if t["id"] == task_id:
 
+    if "status" in request.json and request.json["status"] not in valid_status:
+        return jsonify(message="Invalid status"), 400
+
+    for t in tasks:
+        if t["id"] == task_id:
             if "title" in request.json:
                 t["title"] = request.json["title"]
-            
             if "description" in request.json:
                 t["description"] = request.json["description"]
-
             if "status" in request.json:
                 t["status"] = request.json["status"]
 
             write_tasks(tasks)
-            return jsonify(message = "Task edited successfully" ),200
-        
-    return jsonify(message = "Task not Found"),400
+            return jsonify(message="Task edited successfully"), 200
+
+    return jsonify(message="Task not found"), 404
             
 
             
