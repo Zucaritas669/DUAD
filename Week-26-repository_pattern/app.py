@@ -25,6 +25,11 @@ rental_repo = RentalRepository(db_manager)
 @app.route("/users", methods=["POST"])
 def create_user():
     try:
+
+        if not request.json:                         
+            raise ValueError("No JSON body provided")
+        
+
         
         if "name" not in request.json:
             raise ValueError("name missing")
@@ -41,14 +46,17 @@ def create_user():
         if "birth_date" not in request.json:
             raise ValueError("birth_date missing")
         
-        user_repo.create_user(
+        result = user_repo.create_user(
             request.json["name"],
             request.json["username"],
             request.json["email"],
             request.json["password"],
             request.json["birth_date"]
         )
-        return {"Status":"User created"},200
+        if not result:
+            return jsonify(message  = "Could not create a user"), 500
+
+        return {"Status":"User created"},201
     except ValueError as ex:
         return jsonify(message = str(ex)),400
 
@@ -56,6 +64,11 @@ def create_user():
 @app.route("/cars", methods = ["POST"])
 def create_car():
     try:
+
+        if not request.json:                          
+            raise ValueError("No JSON body provided")
+
+
         if "brand" not in request.json:
             raise ValueError("Brand missing")
         
@@ -65,13 +78,15 @@ def create_car():
         if "manufacture_year" not in request.json:
             raise ValueError("manufacture_year missing")  
         
-        car_repo.create_car(
+        result = car_repo.create_car(
             request.json["brand"],
             request.json["model"],
             request.json["manufacture_year"]
         )
+        if not result:
+            return jsonify(message  = "Could not create a car"), 500
 
-        return {"Status":"Car created"},200
+        return {"Status":"Car created"},201
     except ValueError as ex:
         return jsonify(message = str(ex)),400
 
@@ -80,17 +95,25 @@ def create_car():
 @app.route("/rentals", methods = ["POST"])
 def create_rental():
     try:
+
+        if not request.json:                          
+            raise ValueError("No JSON body provided")
+
+
         if "user_id" not in request.json:
             raise ValueError("User_id missing")
         
         if "car_id" not in request.json:
             raise ValueError("Car_id missing")
         
-        rental_repo.create_rental(
+        result= rental_repo.create_rental(
             request.json["user_id"],
             request.json["car_id"],
         )
-        return{"Status":"Rental created"},200
+        if  not result:
+            return jsonify(message  = "Could not create a rental"), 500
+        
+        return{"Status":"Rental created"},201
     except ValueError as ex:
         return jsonify(message = str(ex)),400
     
@@ -103,6 +126,11 @@ valid_status = ["available", "rented", "disabled"]
 @app.route("/cars/<int:car_id>", methods = ["PATCH"])
 def change_car_status(car_id):
     try:
+
+        if not request.json:                          
+            raise ValueError("No JSON body provided")
+        
+
         if "status" not in request.json:
             raise ValueError("Status missing")
         
@@ -110,8 +138,9 @@ def change_car_status(car_id):
             raise ValueError("Invalid status")
         
 
-        car_repo.change_status(
-            request.json["status"],car_id) # car_id es para verificar cual auto es
+        result  = car_repo.change_status(request.json["status"],car_id) # car_id es para verificar cual auto es
+        if not result:
+            return jsonify(message  = "Could not update car status"), 500
 
         return {"Status": "Car status updated"}, 200
     except ValueError as ex:
@@ -125,13 +154,20 @@ valid_account_status = ["active", "disabled", "morose"]
 @app.route("/users/<int:user_id>",methods = ["PATCH"])
 def change_user_account_status(user_id):
     try:
+
+        if not request.json:                          
+            raise ValueError("No JSON body provided")
+
+
         if "account_status" not in request.json:
             raise ValueError("Account status missing")
         
         if request.json["account_status"] not in valid_account_status:
             raise ValueError("Invalid account status")
         
-        user_repo.change_user_status(request.json["account_status"],user_id)
+        result=user_repo.change_user_status(request.json["account_status"],user_id)
+        if not result:
+            return jsonify(message  = "Could not update user  status"), 500
 
         return{"Status":"User account status updated"},200
     except ValueError as ex:
@@ -144,7 +180,10 @@ def change_user_account_status(user_id):
 @app.route("/rentals/<int:rental_id>/completed", methods = ["PATCH"])
 def rental_status_completed(rental_id):
 
-    rental_repo.complete_rental(rental_id)
+    result = rental_repo.complete_rental(rental_id)
+    if not result:
+        return jsonify(message  = "Could not update rental  status"), 500
+    
     return {"Status":"Rental completed"},200
 
 #Por que se hace así?
@@ -160,6 +199,11 @@ rental_status = ["active","canceled"]
 @app.route("/rentals/<int:rental_id>", methods = ["PATCH"])
 def change_status_rental_two(rental_id):
     try:
+
+        if not request.json:                          
+            raise ValueError("No JSON body provided")
+
+
         if "rental_status" not in request.json:
             raise ValueError("Rental Status missing")
         
@@ -167,7 +211,10 @@ def change_status_rental_two(rental_id):
             raise ValueError("Invalid rental Status")
         
 
-        rental_repo.change_status_rental(request.json["rental_status"],rental_id)
+        result  = rental_repo.change_status_rental(request.json["rental_status"],rental_id)
+        if not result:
+            return jsonify(message  = "Could not update rental  status"), 500
+    
         return{"Status":"Rental Status changed"},200
     except ValueError as ex:
         return jsonify(message = f"Error with the endpoint {ex}"),400
@@ -177,7 +224,10 @@ def change_status_rental_two(rental_id):
 @app.route("/users/<int:user_id>/morose", methods = ["PATCH"])
 def morose_status(user_id):
         
-        user_repo.morose_flag(user_id)
+        result = user_repo.morose_flag(user_id)
+        if not result:
+            return jsonify(message  = "Could not update user status"), 500
+    
         return {"Status":"Morose status updated"},200
 
 

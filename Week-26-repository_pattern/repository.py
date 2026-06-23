@@ -3,10 +3,8 @@ class UserRepository():
         self.db_manager = db_manager
 
         #esta lista es para hacer los filtros , se estabalece una lista con las columnas que se permiten filtrar
-        self.allowed_filters = ["name", "username", "email", "account_status"]
+        self.allowed_filters = ["íd", "name", "username", "email", "password", "birth_date", "account_status"]
         
-
-
 
     def _format_user(self, user_record): 
         #lleva _ porque solo se usa en esta clase
@@ -78,11 +76,12 @@ class UserRepository():
             print("Error getting users", ex)     # si algo falla, lo muestra
             return False            
 
+
 class CarRepository():
     def __init__(self, db_manager):
         self.db_manager = db_manager
 
-        self.allowed_filter_cars = ["brand", "model", "manufacture_year", "status"]
+        self.allowed_filter_cars = ["id","brand", "model", "manufacture_year", "status"]
 
     
     def _format_car(self,car_record):
@@ -140,14 +139,12 @@ class CarRepository():
             print("Error getting cars", ex)     
             return False 
 
-        
-
 
 class RentalRepository():
     def __init__ (self, db_manager):
         self.db_manager = db_manager
 
-        self.allowed_rentals = ["user_id", "car_id", "rental_date", "rental_status"]
+        self.allowed_rentals = ["id","user_id", "car_id", "rental_date", "rental_status"]
 
     def _format_rental(self,rental_record):
         return {
@@ -178,6 +175,7 @@ class RentalRepository():
                 #como queremos que simpre sea completed , se pasa de una vez y no se pasa parámetro
                 #El ususrio no debe de ingresar o elegir es solo una opcion y punto
             )
+
             return True
         except Exception as ex:
             print("Error changing rental status",ex)
