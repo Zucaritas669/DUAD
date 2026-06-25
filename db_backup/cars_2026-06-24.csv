@@ -1,0 +1,53 @@
+id,brand,model,manufacture_year,status
+3,Nissan,Quest,2012,available
+4,Cadillac,Escalade,2004,available
+6,BMW,M6,2009,available
+7,Fillmore,Fillmore,1960,available
+8,Chevrolet,S10,1995,available
+9,Saab,9000,1997,available
+10,Volkswagen,Tiguan,2012,available
+11,Chevrolet,Express 3500,2009,available
+12,Honda,Civic,2005,available
+13,Dodge,Ram 2500 Club,1997,available
+14,Land Rover,Defender Ice Edition,2010,available
+15,Ford,E-Series,1992,available
+16,Chevrolet,S10 Blazer,1994,available
+17,GMC,Savana Cargo Van,2006,available
+18,Ford,Econoline E150,1993,available
+19,Volvo,S60,2012,available
+20,Saab,9-3,2002,available
+21,Volkswagen,rio,2002,available
+22,Mercury,Capri,1992,available
+23,Cadillac,DTS,2007,available
+24,Volkswagen,Type 2,1988,available
+25,Kia,Sedona,2012,available
+26,Toyota,Avalon,2002,available
+27,GMC,Rally Wagon 2500,1994,available
+28,Plymouth,Sundance,1994,available
+29,Dodge,Avenger,2011,available
+30,BMW,745,2004,available
+31,Chrysler,PT Cruiser,2003,available
+32,Lincoln,MKX,2007,available
+33,Dodge,Ram 2500,2000,available
+34,Mazda,RX-7,1992,available
+35,Jaguar,XF,2010,available
+36,Ford,Transit Connect,2013,available
+37,Chrysler,Cirrus,1997,available
+38,Saab,9-3,2001,available
+39,GMC,Yukon XL 2500,2003,available
+40,BMW,7 Series,2010,available
+41,BMW,7 Series,2005,available
+42,Mercury,Cougar,1994,available
+43,Lincoln,Town Car,2006,available
+44,Chevrolet,S10,1999,available
+45,Chrysler,300M,2001,available
+46,Acura,RL,1998,available
+47,Honda,CR-V,2010,available
+48,Mazda,B-Series,1996,available
+49,Chevrolet,Express 2500,2010,available
+50,Jeep,Wrangler,1998,available
+51,Nissan,Silvia,1996,available
+5,Jeep,Compass,2009,available
+1,Buick,Park Avenue,1996,rented
+52,honda,crf,2000,available
+2,Mercury,Sable,1995,available

@@ -1,3 +1,4 @@
+
 from flask import Flask, request , jsonify
 from db import PgManager
 from repository import UserRepository , CarRepository, RentalRepository
@@ -237,7 +238,11 @@ def morose_status(user_id):
 @app.route("/users", methods=["GET"])
 def list_users():
     filters = request.args.to_dict()    # agarra todos los query params como dict
-    users = user_repo.get_all(filters)  # se los pasa al repo
+    users = user_repo.get_all(filters) # se los pasa al repo
+
+    if users is False:  # Por que es is false? porque una lista vacía [] también es false, y no es un error
+        return jsonify(message = "could not get users"),500
+
     return {"users": users}, 200
 
 
@@ -245,6 +250,10 @@ def list_users():
 def get_all_cars():
     result = request.args.to_dict()
     cars = car_repo.get_all_cars(result)
+
+    if cars is False:
+        return jsonify(message = "could not get cars"),500
+
     return {"cars":cars},200
 
 
@@ -252,6 +261,9 @@ def get_all_cars():
 def get_all_rentals():
     result = request.args.to_dict()
     rental = rental_repo.get_rentals(result)
+
+    if rental is False:
+        return jsonify(message = "could not get rentals"),500
     return {"rentals":rental}
 
 

@@ -3,7 +3,7 @@ class UserRepository():
         self.db_manager = db_manager
 
         #esta lista es para hacer los filtros , se estabalece una lista con las columnas que se permiten filtrar
-        self.allowed_filters = ["íd", "name", "username", "email", "password", "birth_date", "account_status"]
+        self.allowed_filters = ["id", "name", "username", "email", "password", "birth_date", "account_status"]
         
 
     def _format_user(self, user_record): 
