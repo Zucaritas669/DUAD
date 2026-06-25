@@ -17,6 +17,10 @@ db_manager = PgManager(
     password = "postgres",
     host = "localhost"
 )
+if not db_manager.connection:
+    print("DB ERROR app")
+    exit() # es exit porque no estoy en una funcion
+
 user_repo = UserRepository(db_manager)
 car_repo = CarRepository(db_manager)
 rental_repo = RentalRepository(db_manager)
@@ -119,6 +123,8 @@ def create_rental():
         return jsonify(message = str(ex)),400
     
 
+
+
 #==========================================  MODIFY Routes ================================
 
 #========== Change car status =====================
@@ -149,6 +155,9 @@ def change_car_status(car_id):
     
 
     
+
+
+
 #========== Change user status =====================
 valid_account_status = ["active", "disabled", "morose"]
 
@@ -173,7 +182,6 @@ def change_user_account_status(user_id):
         return{"Status":"User account status updated"},200
     except ValueError as ex:
         return jsonify(message = f"Error with the endpoint {ex}"),400
-
 
 
 #========== Change rental status =====================
