@@ -1,7 +1,9 @@
 from db import Session
 from models_db import User, Address , Car
 
-
+#Notes
+#s.query(<name>) -> returns a list of dict so that we need a loop 
+#s.get(<name>) -> returns only ONE object/ dict so that we dont need a loop
 
 class UserRepository():
 
@@ -19,18 +21,18 @@ class UserRepository():
 
 
 
-    def modify_user(self, user_id, name, last_name, email, password):
+    def edit_user(self, user_id, name, last_name, email, password):
         with Session() as s:
             try:
-                modify_user = s.get(User, user_id) # busca el usuario por id
-                if not modify_user:
+                user = s.get(User, user_id) # busca el usuario por id
+                if not user:
                     print("User not found")
                     return False
                 
-                modify_user.name = name            # SQLAlchemy detecta los cambios automáticamente
-                modify_user.last_name = last_name
-                modify_user.email = email
-                modify_user.password = password
+                user.name = name            # SQLAlchemy detecta los cambios automáticamente
+                user.last_name = last_name
+                user.email = email
+                user.password = password
                 s.commit()
                 return True
             
@@ -43,12 +45,12 @@ class UserRepository():
     def delete_user(self, user_id):
         with Session() as s:
             try:
-                delete_user = s.get(User , user_id) # busca el usuario por id
-                if not delete_user:
+                user = s.get(User , user_id) # busca el usuario por id
+                if not user:
                     print("User not found")
                     return False
                 
-                s.delete(delete_user) # marca el objeto para eliminar
+                s.delete(user) # marca el objeto para eliminar
                 s.commit()
                 return True
             
@@ -79,7 +81,58 @@ class UserRepository():
                 return False
 
 
-                
+    def get_user_with_car(self):
+        with Session() as s:
+            try:
+                user  = s.query(User).all()
+                return[
+                    {
+                    "id": u.id,
+                    "name": u.name,
+                    "last_name": u.last_name,
+                    "email": u.email
+                    } for u in user if len(u.car) > 1
+                ]
+
+            except Exception as ex:
+                print("Error getting car with user")
+                return False
+            
+
+
+    def get_cars_and_address(self, id):
+        with Session() as s:
+            try:
+                user = s.get(User, id)
+                if not user:
+                    print("User not found")
+                    return False
+
+                return {
+
+                "id": user.id,
+                "name": user.name,
+                "cars": 
+
+                [
+                    {"id": c.id, "brand": c.brand, "model": c.model}
+                    for c in user.car
+                ],
+
+
+                "addresses": 
+                [
+                    {"id": a.id, "address": a.address}
+                    for a in user.address
+                ]
+            }          
+
+            except Exception as ex:
+                print("Error getting Cars and addresses", ex)
+                return False
+
+
+
 class CarRepository():
 
     def create_car(self, brand, model, year):
@@ -173,6 +226,27 @@ class CarRepository():
                 return False
             
 
+    def get_cars_without_user(self):
+        with Session() as s:
+            try:
+                car = s.query(Car).filter(Car.user_id == None).all()
+                return [
+                    {
+                        "id" : c.id,
+                        "brand" : c.brand,
+                        "model" : c.model,
+                        "year" : c.year,
+                        "user_id" : c.user_id
+                    }for c in car
+                ]
+            except Exception as ex:
+                print("Error getting cars without user")
+                return False
+            
+
+
+            
+
 
 class AddressRepository():
 
@@ -242,5 +316,22 @@ class AddressRepository():
 
             except Exception as ex:
                 print("Error getting address", ex)
+                return False
+    
+
+
+    def filter_by_world(self, word):
+        with Session() as s:
+            try:
+                adr = s.query(Address).filter(Address.address.like(f"{word}"))
+                return [
+                {
+                    "id": a.id,
+                    "address": a.address,
+                    "user_id": a.user_id
+                } for a in adr
+            ]
+            except Exception as ex:
+                print("Error getting address by word")
                 return False
             

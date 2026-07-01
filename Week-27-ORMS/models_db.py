@@ -9,7 +9,7 @@ from typing import Optional
 #Mapped automaticamente es not null, este import permite el null
 
 # Import necesarios para trabajar orms con clases
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
 # DeclarativeBase tiene su propio MetaData internamente. Entonces en vez de:
@@ -43,6 +43,14 @@ class User(Base):
     email: Mapped[str] = mapped_column(VARCHAR(50), unique=True)
     password: Mapped[str] = mapped_column(VARCHAR(50))
 
+    address = relationship("Address", back_populates="user")
+    car = relationship("Car",  back_populates="user")
+    #relationship() conecta dos modelos para acceder a otra tablas
+    #primero usa el nombre de la calse
+    #segundo el nombre del atributo 
+    # Los nombres siempre se cruzan: User.addresses / Address.user
+
+
 
 class Address(Base):
     __tablename__ = 'addresses'
@@ -51,6 +59,8 @@ class Address(Base):
     id : Mapped[int]= mapped_column(primary_key=True)
     address : Mapped[str] = mapped_column(VARCHAR(50))
     user_id : Mapped[int] = mapped_column(ForeignKey("lyfter_orm.users.id"))
+
+    user = relationship("User", back_populates="address")
 
 
 class Car(Base):
@@ -62,8 +72,10 @@ class Car(Base):
     model : Mapped[str] = mapped_column(VARCHAR(50))
     year : Mapped[int] = mapped_column(Integer)
     user_id : Mapped[Optional[int]] = mapped_column(ForeignKey("lyfter_orm.users.id"))
+
+    user = relationship("User",back_populates="car")
     
 
-Base.metadata.create_all(engine)
+
 
 

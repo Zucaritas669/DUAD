@@ -6,20 +6,19 @@ address_repo = AddressRepository()
 
 
 #Create 
-
-user_repo.create_user("Shalston", "López", "shalston@mail.com", "pass123")
-car_repo.create_car("Toyota", "Sedan", 2024)
-address_repo.create_address("Nosara, Guanacaste", 1)
+# user_repo.create_user("Fiorella", "Zamora", "ffio@mail.com", "pass456")
+#car_repo.create_car("Cherry", "Hatchback", 2026)
+# address_repo.create_address("Nosara, Guanacaste", 2)
 
 
 #get all
-print(user_repo.get_all())
-print(car_repo.get_all_car())
-print(address_repo.get_all_address())
+# print(user_repo.get_all())
+# print(car_repo.get_all_car())
+# print(address_repo.get_all_address())
 
 
 #associate car with user
-car_repo.associate_car_with_user(1,1)
+#print(car_repo.associate_car_with_user(5,1))
 
 
 #Edit / Modify
@@ -35,6 +34,14 @@ car_repo.associate_car_with_user(1,1)
 
 
 #delete
-# user_repo.delete_user(1)
-# car_repo.delete_car(1)
-# address_repo.delete_address(1)
+
+#user_repo.delete_user(1)
+#car_repo.delete_car(1)
+#address_repo.delete_address(1)
+
+
+#Extra Exercises 
+
+#print(car_repo.get_cars_without_user())
+#print(user_repo.get_user_with_car())
+# print (user_repo.get_cars_and_address(1))
