@@ -17,7 +17,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 #AHORA
 #meta_obj.create_all(engine)
-# Table  se reemplaza por class User(Base) con __tablename__
+# Table  se reemplaza por class User(Base) con __tablename__  /  __table_args__ = {'schema': '<schema name>'}
 # Column se reemplaza por mapped_column
 # MetaData() ya viene dentro de Base (Base.metadata)
 
@@ -43,8 +43,8 @@ class User(Base):
     email: Mapped[str] = mapped_column(VARCHAR(50), unique=True)
     password: Mapped[str] = mapped_column(VARCHAR(50))
 
-    address = relationship("Address", back_populates="user")
-    car = relationship("Car",  back_populates="user")
+    addresses = relationship("Address", back_populates="user")
+    cars = relationship("Car",  back_populates="user")
     #relationship() conecta dos modelos para acceder a otra tablas
     #primero usa el nombre de la calse
     #segundo el nombre del atributo 
@@ -60,7 +60,7 @@ class Address(Base):
     address : Mapped[str] = mapped_column(VARCHAR(50))
     user_id : Mapped[int] = mapped_column(ForeignKey("lyfter_orm.users.id"))
 
-    user = relationship("User", back_populates="address")
+    user = relationship("User", back_populates="addresses")
 
 
 class Car(Base):
@@ -73,7 +73,7 @@ class Car(Base):
     year : Mapped[int] = mapped_column(Integer)
     user_id : Mapped[Optional[int]] = mapped_column(ForeignKey("lyfter_orm.users.id"))
 
-    user = relationship("User",back_populates="car")
+    user = relationship("User",back_populates="cars")
     
 
 

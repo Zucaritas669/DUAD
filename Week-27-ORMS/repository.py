@@ -323,7 +323,7 @@ class AddressRepository():
     def filter_by_world(self, word):
         with Session() as s:
             try:
-                adr = s.query(Address).filter(Address.address.like(f"{word}"))
+                adr = s.query(Address).filter(Address.address.like(f"%{word}%"))
                 return [
                 {
                     "id": a.id,
