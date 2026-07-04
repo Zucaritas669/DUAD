@@ -1,6 +1,8 @@
 from db import Session
 from models_db import User, Address , Car
 
+from sqlalchemy import func
+
 #Notes
 #s.query(<name>) -> returns a list of dict so that we need a loop 
 #s.get(<name>) -> returns only ONE object/ dict so that we dont need a loop
@@ -84,14 +86,21 @@ class UserRepository():
     def get_user_with_car(self):
         with Session() as s:
             try:
-                user  = s.query(User).all()
+                user  = (
+                    s.query(User)
+                    .join(Car)
+                    .group_by(User.id)
+                    .having(func.count(Car.id)>1)
+                    .all()
+                )
+
                 return[
                     {
                     "id": u.id,
                     "name": u.name,
                     "last_name": u.last_name,
                     "email": u.email
-                    } for u in user if len(u.car) > 1
+                    } for u in user 
                 ]
 
             except Exception as ex:
@@ -323,7 +332,8 @@ class AddressRepository():
     def filter_by_world(self, word):
         with Session() as s:
             try:
-                adr = s.query(Address).filter(Address.address.like(f"%{word}%"))
+                adr = s.query(Address).filter(Address.address.like(f"%{word}%")) # los % permiten una búsqueda parcial / cualquier cosa antes + palabra + cualquier cosa después
+
                 return [
                 {
                     "id": a.id,
