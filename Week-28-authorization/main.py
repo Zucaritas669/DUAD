@@ -280,6 +280,11 @@ def create_purchase_flask():
 @login_required
 def get_user_invoices_flask(id):
     try:
+
+        if request.user["role"] == "user" and request.user["user_id"] != id:
+            return jsonify(message = "Forbidden: can only view your invoices"),404
+        
+
         user = invoice_repo.get_invoices(id)
         if not user:
             return jsonify(message = "User not found"),404
@@ -300,6 +305,7 @@ def get_user_invoices_flask(id):
 
 @app.route("/invoice",methods = ["GET"])
 @login_required
+@admin_required
 def get_all_invoices_flask():
     try:
         user = invoice_repo.get_all_invoices()

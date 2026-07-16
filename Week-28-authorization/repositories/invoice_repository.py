@@ -36,9 +36,6 @@ class InvoiceRepository():
     @handle_session
     def get_invoices(self, user_id, s=None):
         invoice_ = s.query(Invoice).filter(Invoice.user_id == user_id).all()
-        if not invoice_:
-            print("This user does not have invoices")
-            return False
         
         return invoice_
 
