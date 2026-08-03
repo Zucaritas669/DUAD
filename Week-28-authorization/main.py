@@ -4,10 +4,14 @@ from repositories.item_repository import ItemRepository
 from repositories.invoice_repository import InvoiceRepository
 
 from auth.decorators import login_required , admin_required
+from cache import CacheManager
+import json
 
 user_repo = UserRepository()
 item_repo = ItemRepository()
 invoice_repo = InvoiceRepository()
+
+cache_manager = CacheManager(host="PLACEHOLDER", port="PLACEHOLDER", password="PLACEHOLDER")
 
 app = Flask(__name__)
 #code
@@ -154,6 +158,11 @@ def create_item_flask():
             price = request.json["price"],
             stock = request.json["stock"]
         )
+        cache_manager.delete_data("items:all")
+        #como se agrega una fruta nueva, se borra la lista existente
+
+
+
         return jsonify(message = "Item created"), 201
     except ValueError as ex:
         return jsonify(message = str(ex)),400
@@ -164,16 +173,31 @@ def create_item_flask():
 @app.route("/item/<int:id>",methods = ["GET"])
 def get_item_by_id_flask(id):
     try:
+
+        key = f"item:{id}"
+        # Arma una clave única de Redis para esta fruta específica
+
+        exist,tll = cache_manager.check_key(key)
+        if exist:
+            cached = cache_manager.get_data(key)
+            return jsonify(json.loads(cached)), 200
+        # Si existe, la trae de Redis
+        # La convierte de string a dict y la retorna, sin tocar Postgres , por eso el json.loads
+
+
         fruit = item_repo.get_item_by_id(id)
         if not fruit:
             return jsonify(message = "Item not found"),404
         
-        return jsonify(
-            id = fruit.id,
-            name = fruit.name,
-            price = float(fruit.price),
-            stock = fruit.stock
-        ),200
+        data = {
+            "id": fruit.id,
+            "name": fruit.name,
+            "price": float(fruit.price),
+            "stock": fruit.stock
+        }
+        cache_manager.store_data_redis(key, json.dumps(data))
+        return jsonify(data), 200
+    # Guarda esa fruta en Redis como string, para la próxima consulta
     
     except Exception as ex:
         return jsonify(message = str(ex)),500
@@ -182,6 +206,19 @@ def get_item_by_id_flask(id):
 @app.route("/item",methods = ["GET"])
 def get_all_items_flask():
     try:
+
+        key = "items:all"
+        exists, ttl = cache_manager.check_key(key)
+        # Arma una clave única de Redis
+        # Revisa si ya existe la lista cacheada
+
+        if exists:
+            cached = cache_manager.get_data(key)
+            return jsonify(json.loads(cached)), 200
+            # Si existe, la trae de Redis
+            # La convierte de string a dict y la retorna, sin tocar Postgres , por eso el json.loads
+
+
         item = item_repo.get_all_items()
         if not item:
             return jsonify(message = "No item"),404
@@ -194,7 +231,10 @@ def get_all_items_flask():
                 "price": float(i.price),
                 "stock": i.stock
             })
+        cache_manager.store_data_redis(key, json.dumps(items_list))
         return jsonify(items_list),200
+        # Guarda la lista completa en Redis para la próxima consulta
+
         
     except Exception as ex:
         return jsonify(message = str(ex)),500
@@ -222,10 +262,18 @@ def edit_item_flask(id):
             price=  request.json["price"],
             stock = request.json["stock"],
             
-        )
+        )  
         if not item:
             return jsonify(message= "Item not found"),404
+
+
+        cache_manager.delete_data(f"item:{id}")
+        # La fruta editada ya no coincide con lo que había en cache
+
+        cache_manager.delete_data("items:all")
+        # La lista completa tampoco es correcta, porque incluye esta fruta desactualizada
         return jsonify(message= "Item updated"),200
+    
 
     except ValueError as ex:
         return jsonify(message = str(ex)),400
@@ -242,6 +290,12 @@ def delete_item_flask(id):
         if not item:
             return jsonify(message = "Item not found"),404
         
+        cache_manager.delete_data(f"item:{id}")
+        # Borra la versión cacheada de esta fruta
+
+        cache_manager.delete_data("items:all")
+        # Borra la lista completa cacheada
+        
         return jsonify(message = "Item deleted"),200
     except Exception as ex:
         return jsonify(message = str(ex)),500
@@ -256,6 +310,7 @@ def create_purchase_flask():
         for i in valid:
             if i not in request.json or not request.json[i]:
                 return jsonify (message = f"{i} is missing"),400
+        
             
         invoice = invoice_repo.create_purchase(
             user_id = request.user["user_id"],
