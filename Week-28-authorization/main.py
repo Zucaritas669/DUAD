@@ -316,6 +316,10 @@ def create_purchase_flask():
             user_id = request.user["user_id"],
             items = request.json["items"]
         )
+        for buy in request.json["items"]:
+            cache_manager.delete_data(f"item:{buy['item_id']}")
+
+        cache_manager.delete_data("items:all")
 
         return jsonify(
             message = "Purchase completed",
@@ -337,7 +341,7 @@ def get_user_invoices_flask(id):
     try:
 
         if request.user["role"] == "user" and request.user["user_id"] != id:
-            return jsonify(message = "Forbidden: can only view your invoices"),404
+            return jsonify(message = "Forbidden: can only view your invoices"),403
         
 
         user = invoice_repo.get_invoices(id)
