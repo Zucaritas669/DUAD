@@ -66,9 +66,9 @@ def create_user():
         return jsonify(message = "User created"),201
     
     except ValueError as ex:
-        return jsonify(message = str(ex))
+        return jsonify(message = str(ex)),500
     except Exception as ex:
-        return jsonify(message = str(ex))
+        return jsonify(message = str(ex)),500
 
 
 
@@ -82,16 +82,97 @@ def login():
                 return jsonify(message = f"{v} is missing"),400
 
         token = user_repo.login(request.json["email"], request.json["password"])
-        if not token:
+        if token is False:
             return jsonify(message = "Invalid token"),401
+
+        if token == "User is deactivated":
+            return jsonify(message = "User is deactivated"),403
         return jsonify(token = token ),200
             
     except ValueError as ex:
-        return jsonify(message = str(ex))
+        return jsonify(message = str(ex)),500
     except Exception as ex:
-        return jsonify(message = str(ex))
+        return jsonify(message = str(ex)),500
 
 
+
+@app.route("/user/<int:id>",methods = ["PATCH"])
+@login_required
+@admin_required
+
+def edit_user_flask(id):
+    try:
+        valid = ["name","username","email","password",]
+        for v in valid:
+            if v not in request.json or not request.json[v]:
+                return jsonify(message = f"{v} is missing"),400
+
+
+        user = user_repo.edit_user(
+            id = id,
+            name = request.json["name"],
+            username = request.json["username"],
+            email = request.json["email"],
+            password=  request.json["password"]
+            )
+        if user is False:
+            return jsonify(message = "User not found"),404 
+
+        if user == "This is an admin account, only the developer can edit it":
+            return jsonify(message = "Forbidden ,only developer"),403
+        
+        if user == "This username already exist":
+            return jsonify(message = "This username already exist"),409
+        
+        if user == "This email already exist":
+            return jsonify(message = "This email already exist"),409
+
+        return jsonify(message = f"User edited"),200
+        
+    except ValueError as ex:
+        return jsonify(message = str(ex)),500
+    except Exception as ex:
+        return jsonify(message = str(ex)),500
+
+
+@app.route("/user/delete/<int:id>",methods = ["DELETE"])
+@login_required
+@admin_required
+def delete_user(id):
+    try:
+        user = user_repo.soft_delete_user(id)
+        if user is False:
+            return jsonify(message = "User not found"),404
+
+        if user == "This is an admin account, only the developer can delete it":
+            return jsonify(message = "Forbidden, only developer"),403
+
+        if user =="This user has an active Cart":
+            return jsonify(message = "This user has an active Car"),403
+
+        return jsonify(message = f"User disabled"),200
+    
+    except Exception as ex:
+        return jsonify(message = str(ex)),500
+
+
+
+@app.route("/user/reactive/<int:id>",methods = ["PATCH"])
+@login_required
+@admin_required
+def reactive_user(id):
+    try:
+        user = user_repo.reactive_user(id)
+
+        if user is False:
+            return jsonify(message = "User not found"),404
+        
+        if user is None:
+            return jsonify(message = "User is already active"),409
+
+        return jsonify(message = "User reactive"),200
+    except Exception as ex:
+        return jsonify(message = str(ex)),500
 
 
 

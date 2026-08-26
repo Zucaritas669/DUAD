@@ -1,5 +1,6 @@
 from DB.tables import Item,Category,CartItem
 from sqlalchemy import func
+from sqlalchemy.orm import joinedload
 
 from Repo.handle_session import handle_session
 
@@ -112,7 +113,7 @@ class ItemRepository():
 
     @handle_session
     def get_all_items(self, s=None):
-        item = s.query(Item).filter(Item.is_active == True).all()
+        item = s.query(Item).options(joinedload(Item.category)).filter(Item.is_active == True).all()
         if not item:
             print("Items not found")
             return False

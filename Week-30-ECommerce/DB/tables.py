@@ -36,7 +36,8 @@ class User(Base):
     email : Mapped[str] = mapped_column(VARCHAR(45), unique=True)
     password : Mapped[str] = mapped_column(VARCHAR(255))
     role : Mapped[str] = mapped_column(VARCHAR(15)) # "user" as default
-
+    is_active : Mapped[bool] = mapped_column(default=True)
+    
     #Relationships
     addresses = relationship("Address",back_populates="user")
     pay_methods = relationship("PayMethod",back_populates="user")

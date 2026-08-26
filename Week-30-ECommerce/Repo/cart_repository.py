@@ -1,7 +1,7 @@
 from DB.tables import Cart, CartItem, Item, User
 from sqlalchemy import func
 from Repo.handle_session import handle_session
-
+from sqlalchemy.orm import joinedload
 class CartRepository():
 
     @handle_session
@@ -122,7 +122,7 @@ class CartRepository():
             return "Cart does not belong to this user"
                 
 
-        cart_item = s.query(CartItem).filter(CartItem.cart_id==cart_id).all()
+        cart_item = s.query(CartItem).options(joinedload(CartItem.item)).filter(CartItem.cart_id==cart_id).all()
         if not cart_item:
             print("No items in the cart ")
             return False

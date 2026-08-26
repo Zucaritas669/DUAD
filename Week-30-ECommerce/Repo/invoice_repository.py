@@ -1,5 +1,6 @@
 from DB.tables import User, Address, PayMethod,Cart,CartItem, Invoice, Item , InvoiceItem
 from Repo.handle_session import handle_session
+from sqlalchemy.orm import joinedload
 
 class InvoiceRepository():
 
@@ -84,7 +85,13 @@ class InvoiceRepository():
             print("User not found")
             return False
 
-        invoices = s.query(Invoice).filter( Invoice.user_id == user.id).all()
+
+        invoices = s.query(Invoice).options(
+            joinedload(Invoice.user),
+            joinedload(Invoice.address),
+            joinedload(Invoice.pay_method)
+        ).filter(Invoice.user_id == user.id).all()
+
         if not invoices:
             print("Invoices not found")
             return None
@@ -108,7 +115,13 @@ class InvoiceRepository():
 
     @handle_session
     def all_user_invoice(self,s=None):
-        invoices = s.query(Invoice).all()
+
+        invoices = s.query(Invoice).options(
+            joinedload(Invoice.user),
+            joinedload(Invoice.address),
+            joinedload(Invoice.pay_method)
+        ).all()
+
         if not invoices:
             print("Not invoices created yet")
             return False
