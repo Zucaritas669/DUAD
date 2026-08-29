@@ -1,4 +1,9 @@
 from unittest.mock import patch
+
+# Mockear Redis ANTES de importar app.py, para que CacheManager no se conecte de verdad
+patch("redis.Redis.ping", return_value=True).start()
+patch("redis.Redis.__init__", return_value=None).start()
+
 from app import app
 from Auth.jwt_handler import generate_token
 
@@ -62,9 +67,16 @@ def test_delete_item_success():
         assert response.status_code == 200
 
 
+
+
 def test_get_all_items_success():
     client = app.test_client()
-    with patch("app.item_repo.get_all_items") as mock:
-        mock.return_value = [{"id": 1, "name": "Shampoo"}]
+    with patch("app.item_repo.get_all_items") as mock_repo, \
+        patch("app.cache_manager.check_key") as mock_check, \
+        patch("app.cache_manager.store_data_redis") as mock_store:
+
+        mock_check.return_value = (False, None)
+        mock_repo.return_value = [{"id": 1, "name": "Shampoo"}]
+
         response = client.get("/item", headers=get_auth_header())
         assert response.status_code == 200

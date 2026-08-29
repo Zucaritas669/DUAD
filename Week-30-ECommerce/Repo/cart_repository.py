@@ -78,17 +78,26 @@ class CartRepository():
             print("Item not found")
             return False
 
+        if quantity <= 0:
+            print("Quantity must be greater than 0")
+            return None
+
         #Verifica si ese producto específico ya está agregado a ese carrito específico
         cart_item = s.query(CartItem).filter(CartItem.cart_id == cart_id, CartItem.item_id==item_id).first()
         if not cart_item:
             print("Item is not in the cart")
-            return None
+            return "not_in_cart"
+
+        if quantity > item.stock:
+            return "not_enough_stock"
 
         cart_item.quantity = quantity
         s.commit()
         s.refresh(cart_item)
         return cart_item
 
+
+    
 
     #borra item del cart no el cart item
     @handle_session 
@@ -131,10 +140,36 @@ class CartRepository():
         for c in cart_item:
             list_.append({
                 "Item name" : c.item.name,
-                "Item price" : c.item.price,
+                "Item price" : float(c.item.price),
                 "Quantity" : c.quantity,
             })
         return (list_)
+
+
+
+    @handle_session
+    def get_active_cart(self, user_id, s=None):
+        cart = s.query(Cart).filter(Cart.user_id == user_id, Cart.status == "active").first()
+        if not cart:
+            print("No active cart found")
+            return False
+
+        cart_items = s.query(CartItem).options(joinedload(CartItem.item)).filter(CartItem.cart_id == cart.id).all()
+
+        items_list = []
+        for c in cart_items:
+            items_list.append({
+                "item_id": c.item.id,
+                "item_name": c.item.name,
+                "item_price": float(c.item.price),
+                "quantity": c.quantity
+            })
+
+        return {
+            "cart_id": cart.id,
+            "status": cart.status,
+            "items": items_list
+        }
 
 
 

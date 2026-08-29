@@ -8,5 +8,6 @@ def handle_session(func):
             except Exception as ex:
                 print(f"Error handle the session: {ex}")
                 s.rollback()
-                return False
+                raise
+            
     return wrapper

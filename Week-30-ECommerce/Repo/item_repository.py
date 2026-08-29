@@ -4,6 +4,7 @@ from sqlalchemy.orm import joinedload
 
 from Repo.handle_session import handle_session
 
+
 class ItemRepository():
 
     @handle_session
@@ -12,7 +13,7 @@ class ItemRepository():
         if price <= 0:
             return "Price must be greater than 0"
 
-        if stock <= 0:
+        if stock < 0:
             return "Stock cannot be negative"
 
         exist = s.query(Item).filter(func.lower(Item.name)==name.lower(), Item.is_active == True).first()
@@ -46,7 +47,7 @@ class ItemRepository():
         if price <= 0:
             return "Price must be greater than 0"
 
-        if stock <= 0:
+        if stock < 0:
             return "Stock cannot be negative"
 
         item = s.get(Item,id)
@@ -125,7 +126,7 @@ class ItemRepository():
             "name" : i.name,
             "category" : i.category.name,
             "stock" : i.stock,
-            "price" : i.price,
+            "price" : float(i.price),
             "description" : i.description
         })
         return items_list
@@ -145,7 +146,7 @@ class ItemRepository():
             "name" : item.name,
             "category" : item.category.name,
             "stock" : item.stock,
-            "price" : item.price,
+            "price" : float(item.price),
             "description" : item.description
         })
 

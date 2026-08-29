@@ -135,7 +135,7 @@ def edit_user_flask(id):
         return jsonify(message = str(ex)),500
 
 
-@app.route("/user/delete/<int:id>",methods = ["DELETE"])
+@app.route("/user/<int:id>",methods = ["DELETE"])
 @login_required
 @admin_required
 def delete_user(id):
@@ -176,6 +176,37 @@ def reactive_user(id):
 
 
 
+@app.route("/user", methods=["GET"])
+@login_required
+@admin_required
+def get_all_users_flask():
+    try:
+        users = user_repo.get_users()
+        if not users:
+            return jsonify(message="No users found"),404
+
+        return jsonify(users),200
+    except Exception as ex:
+        return jsonify(message = str(ex)),500
+
+
+
+
+@app.route("/user/<int:id>", methods=["GET"])
+@login_required
+@admin_required
+def get_user_by_id_flask(id):
+    try:
+        user = user_repo.get_user_by_id(id)
+        if not user:
+            return jsonify(message="User not found"),404
+
+        return jsonify(user),200
+    except Exception as ex:
+        return jsonify(message = str(ex)),500
+
+
+
 #===============================================================================================================================
 #                                                       CATEGORY ENDPOINTS
 #===============================================================================================================================
@@ -186,8 +217,10 @@ def reactive_user(id):
 @admin_required
 def create_category():
     try:
-        if not request.json or not request.json["name"]:
-            return jsonify(message = "Name is missing"),400
+        valid = ["name"]
+        for v in valid:
+            if v not in request.json or request.json[v] is None:
+                return jsonify(message = f"{v} is missing"),400
 
         category = category_repo.create_category(
             name=request.json["name"],
@@ -213,14 +246,15 @@ def create_category():
 @admin_required
 def edit_category_flask(id):
     try:
-        if not request.json or not request.json["name"]:
-            return jsonify(message = "Name is missing"),400
+        valid = ["name"]
+        for v in valid:
+            if v not in request.json or request.json[v] is None:
+                return jsonify(message = f"{v} is missing"),400
 
         category = category_repo.edit_category(
             id=id,
             name=request.json["name"],
             description=request.json.get("description"),
-            
         )
         if category is False:
             return jsonify(message = "Category not found"),404
@@ -576,6 +610,22 @@ def delete_address_flask(id):
 
 
 
+@app.route("/address", methods=["GET"])
+@login_required
+def get_my_addresses_flask():
+    try:
+        user = request.user["user_id"]
+        addresses = address_repo.get_my_addresses(user)
+        if not addresses:
+            return jsonify(message="No addresses found"),404
+
+        return jsonify(addresses),200
+    except Exception as ex:
+        return jsonify(message = str(ex)),500
+
+
+
+
 
 #===============================================================================================================================
 #                                                       PAY METHOD ENDPOINTS
@@ -611,6 +661,22 @@ def add_pay_method_flask():
     
     except ValueError as ex:
         return jsonify(message = str(ex)),500
+    except Exception as ex:
+        return jsonify(message = str(ex)),500
+
+
+
+
+@app.route("/pay_method", methods=["GET"])
+@login_required
+def get_my_pay_methods_flask():
+    try:
+        user = request.user["user_id"]
+        methods = pay_repo.get_my_pay_methods(user)
+        if not methods:
+            return jsonify(message="No pay methods found"),404
+
+        return jsonify(methods),200
     except Exception as ex:
         return jsonify(message = str(ex)),500
 
@@ -695,8 +761,12 @@ def edit_cart_item_flask(cart_id,item_id):
         if cart_item is False:
             return jsonify(message= "Item not found"),404
         if cart_item is None:
-            return jsonify(message= "item is not in the cart"),404
-        return jsonify(message= "item edited"),200
+            return jsonify(message= "Quantity must be greater than 0"),400
+        if cart_item == "not_in_cart":
+            return jsonify(message= "Item is not in the cart"),404
+        if cart_item == "not_enough_stock":
+            return jsonify(message= "Not enough stock"),400
+        return jsonify(message= "Item edited"),200
     
     except ValueError as ex:
         return jsonify(message = str(ex)),500
@@ -749,6 +819,23 @@ def get_cart_items(cart_id):
 
 
 
+@app.route("/cart", methods=["GET"])
+@login_required
+def get_active_cart_flask():
+    try:
+        user = request.user["user_id"]
+        cart = cart_repo.get_active_cart(user)
+        if not cart:
+            return jsonify(message="No active cart found"),404
+
+        return jsonify(cart),200
+    except Exception as ex:
+        return jsonify(message = str(ex)),500
+    
+
+
+
+
 #===============================================================================================================================
 #                                                       ITEM/INVOICE ITEM ENDPOINTS
 #===============================================================================================================================
@@ -789,6 +876,7 @@ def invoice_logic():
         if isinstance(invoice, str) and invoice.startswith("Not enough stock"):
             return jsonify(message=invoice), 400
 
+        cache_manager.delete_data("item:all")
         return jsonify(message = "Invoice created"),201   
     except ValueError as ex:
         return jsonify(message = str(ex)),500
@@ -855,7 +943,8 @@ def create_return():
         
         if return_  == "Return quantity exceeds available amount":
             return jsonify(message="Return quantity exceeds available amount"),400
-        
+    
+        cache_manager.delete_data("item:all")
         return jsonify(message = "Return created"),201
         
     except ValueError as ex:

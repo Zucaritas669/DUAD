@@ -38,3 +38,21 @@ class AddressRepository():
         s.delete(adr)
         s.commit()
         return True
+
+
+
+
+    @handle_session
+    def get_my_addresses(self, user_id, s=None):
+        addresses = s.query(Address).filter(Address.user_id == user_id).all()
+        if not addresses:
+            print("No addresses found")
+            return False
+
+        list_ = []
+        for a in addresses:
+            list_.append({
+                "id": a.id,
+                "address": a.address
+            })
+        return list_

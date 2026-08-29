@@ -38,3 +38,21 @@ class PayMethodRepository():
         s.delete(exist)
         s.commit()
         return True
+
+
+
+
+    @handle_session
+    def get_my_pay_methods(self, user_id, s=None):
+        methods = s.query(PayMethod).filter(PayMethod.user_id == user_id).all()
+        if not methods:
+            print("No pay methods found")
+            return False
+
+        list_ = []
+        for m in methods:
+            list_.append({
+                "id": m.id,
+                "pay_method": m.pay_method
+            })
+        return list_

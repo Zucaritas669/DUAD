@@ -1,4 +1,9 @@
 from unittest.mock import patch, MagicMock
+
+#Mockear Redis ANTES de importar app.py, para que CacheManager no se conecte de verdad
+patch("redis.Redis.ping", return_value=True).start()
+patch("redis.Redis.__init__", return_value=None).start()
+
 from app import app
 from Auth.jwt_handler import generate_token
 
@@ -72,13 +77,17 @@ def test_delete_category_not_found():
 
 def test_get_all_categories_success():
     client = app.test_client()
-    with patch("app.category_repo.get_all") as mock:
+    with patch("app.category_repo.get_all") as mock_repo, \
+        patch("app.cache_manager.check_key") as mock_check, \
+        patch("app.cache_manager.store_data_redis") as mock_store:
+
+        mock_check.return_value = (False, None)
+
         fake_category = MagicMock()
         fake_category.id = 1
         fake_category.name = "Perros"
         fake_category.description = None
-
-        mock.return_value = [fake_category]
+        mock_repo.return_value = [fake_category]
 
         response = client.get("/category", headers=get_auth_header())
         assert response.status_code == 200

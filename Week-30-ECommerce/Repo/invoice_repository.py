@@ -1,6 +1,6 @@
 from DB.tables import User, Address, PayMethod,Cart,CartItem, Invoice, Item , InvoiceItem
 from Repo.handle_session import handle_session
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, selectinload
 
 class InvoiceRepository():
 
@@ -89,7 +89,8 @@ class InvoiceRepository():
         invoices = s.query(Invoice).options(
             joinedload(Invoice.user),
             joinedload(Invoice.address),
-            joinedload(Invoice.pay_method)
+            joinedload(Invoice.pay_method),
+            selectinload(Invoice.invoice_items).joinedload(InvoiceItem.item)
         ).filter(Invoice.user_id == user.id).all()
 
         if not invoices:
@@ -98,18 +99,29 @@ class InvoiceRepository():
 
         list_ = []
         for i in invoices:
+            items_list = []
+            for ii in i.invoice_items:
+                items_list.append({
+                    "item_name": ii.item.name,
+                    "amount": ii.amount,
+                    "unit_price": float(ii.unit_price),
+                    "sub_total": float(ii.sub_total)
+                })
+
             list_.append({
-            "invoice_id": i.id,
-            "Name" : i.user.name,
-            "Email" : i.user.email,
-            "address": i.address.address,
-            "pay_method": i.pay_method.pay_method,
-            "total": i.total,
-            "note": i.note,
-            "created_at": i.created_at
+                "invoice_id": i.id,
+                "Name" : i.user.name,
+                "Email" : i.user.email,
+                "address": i.address.address,
+                "pay_method": i.pay_method.pay_method,
+                "total": float(i.total),
+                "note": i.note,
+                "created_at": i.created_at,
+                "items": items_list
             })
 
-        return(list_)
+        return list_
+
 
 
 
@@ -119,7 +131,8 @@ class InvoiceRepository():
         invoices = s.query(Invoice).options(
             joinedload(Invoice.user),
             joinedload(Invoice.address),
-            joinedload(Invoice.pay_method)
+            joinedload(Invoice.pay_method),
+            selectinload(Invoice.invoice_items).joinedload(InvoiceItem.item)
         ).all()
 
         if not invoices:
@@ -128,15 +141,25 @@ class InvoiceRepository():
 
         list_ = []
         for i in invoices:
+            items_list = []
+            for ii in i.invoice_items:
+                items_list.append({
+                    "item_name": ii.item.name,
+                    "amount": ii.amount,
+                    "unit_price": float(ii.unit_price),
+                    "sub_total": float(ii.sub_total)
+                })
+
             list_.append({
-            "invoice_id": i.id,
-            "Name" : i.user.name,
-            "Email" : i.user.email,
-            "address": i.address.address,
-            "pay_method": i.pay_method.pay_method,
-            "total": i.total,
-            "note": i.note,
-            "created_at": i.created_at
+                "invoice_id": i.id,
+                "Name" : i.user.name,
+                "Email" : i.user.email,
+                "address": i.address.address,
+                "pay_method": i.pay_method.pay_method,
+                "total": float(i.total),
+                "note": i.note,
+                "created_at": i.created_at,
+                "items": items_list
             })
 
         return list_

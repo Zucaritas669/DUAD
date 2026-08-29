@@ -142,6 +142,44 @@ class UserRepository():
         return True
 
 
+    @handle_session
+    def get_users(self, s=None):
+
+        user = s.query(User).filter(User.is_active == True).all()
+        if not user:
+            print("Users not found")
+            return None
+
+        users_list = []
+        for u in user:
+            users_list.append({       
+            "id": u.id,
+            "name": u.name,
+            "username": u.username,
+            "email": u.email,
+            "role": u.role
+            })
+
+        return users_list
+    
+
+
+        
+    @handle_session
+    def get_user_by_id(self, id, s=None):
+        user = s.query(User).filter(User.id == id, User.is_active == True).first()
+        if not user:
+            print("User not found")
+            return False
+
+        return {
+            "id": user.id,
+            "name": user.name,
+            "username": user.username,
+            "email": user.email,
+            "role": user.role
+        }
+
     
 
 

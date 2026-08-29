@@ -1,4 +1,9 @@
 from unittest.mock import patch, MagicMock
+
+# Mockear Redis ANTES de importar app.py, para que CacheManager no se conecte de verdad
+patch("redis.Redis.ping", return_value=True).start()
+patch("redis.Redis.__init__", return_value=None).start()
+
 from app import app
 from Auth.jwt_handler import generate_token
 
