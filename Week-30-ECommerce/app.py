@@ -183,7 +183,7 @@ def get_all_users_flask():
     try:
         users = user_repo.get_users()
         if not users:
-            return jsonify(message="No users found"),404
+            return jsonify(message="No users found"),200
 
         return jsonify(users),200
     except Exception as ex:
@@ -337,7 +337,7 @@ def get_all_categories():
 
         cate = category_repo.get_all()
         if cate is None:
-            return jsonify(message = "Not category created yet"),404
+            return jsonify(message = "Not category created yet"),200
 
         list_ = []
         for l in cate:
@@ -355,7 +355,7 @@ def get_all_categories():
 
 
 
-@app.route("/category/id/<int:id>",methods = ["GET"])
+@app.route("/category/<int:id>",methods = ["GET"])
 @login_required
 def get_cate_by_id_flask(id):
     try:
@@ -495,7 +495,7 @@ def deactivate_item_flask(id):
 
 
 
-@app.route("/item/<int:id>/reactivate", methods=["PATCH"])
+@app.route("/item/reactive/<int:id>", methods=["PATCH"])
 @login_required
 @admin_required
 def reactivate_item_flask(id):
@@ -531,7 +531,7 @@ def get_all_items_flask():
 
         item = item_repo.get_all_items()
         if not item:
-            return jsonify(message = "Items not found"),404
+            return jsonify(message = "Items not found"),200
 
         cache_manager.store_data_redis(key, json.dumps(item))
         return jsonify(item),200
@@ -617,7 +617,7 @@ def get_my_addresses_flask():
         user = request.user["user_id"]
         addresses = address_repo.get_my_addresses(user)
         if not addresses:
-            return jsonify(message="No addresses found"),404
+            return jsonify(message="No addresses found"),200
 
         return jsonify(addresses),200
     except Exception as ex:
@@ -674,7 +674,7 @@ def get_my_pay_methods_flask():
         user = request.user["user_id"]
         methods = pay_repo.get_my_pay_methods(user)
         if not methods:
-            return jsonify(message="No pay methods found"),404
+            return jsonify(message="No pay methods found"),200
 
         return jsonify(methods),200
     except Exception as ex:
@@ -810,7 +810,7 @@ def get_cart_items(cart_id):
             return jsonify(message = "Cart does not belong to this user"),403
 
         if not cart_items:
-            return jsonify(message = "No items in the cart"),404
+            return jsonify(message = "No items in the cart"),200
         return jsonify(cart_items),200
     
     except Exception as ex:
