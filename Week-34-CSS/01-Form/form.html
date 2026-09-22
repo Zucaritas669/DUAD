@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="style.css" rel="stylesheet" />
+    <title>Contact us</title>
+  </head>
+  <body>
+    <form action="https://www.dummyjson.com/test" method="POST">
+      <div class="general-container">
+        <div class="line"></div>
+        <h1 class="tittle">Contact us!</h1>
+        <p class="sub_text">Got something to say? Fire away!</p>
+
+        <input
+          type="text"
+          id="first_name"
+          name="firstName"
+          placeholder="First name *"
+          required
+          class="elements"
+        />
+
+        <input
+          type="text"
+          id="last_name"
+          name="firstName"
+          placeholder="Last name *"
+          required
+          class="elements"
+        />
+
+        <input
+          type="text"
+          id="email"
+          name="email"
+          placeholder="Email *"
+          required
+          class="elements"
+        />
+
+        <select name="type" id="type" required class="elements">
+          <option hidden>What's your message about? *</option>
+          <option value="question">Question</option>
+          <option value="suggestion">Suggestion</option>
+        </select>
+
+        <textarea
+          id="message"
+          name="message"
+          placeholder="Fire away! *"
+          required
+          class="elements"
+        ></textarea>
+
+        <input
+          type="submit"
+          value="Send my message"
+          placeholder="Send my message"
+          class="button"
+        />
+      </div>
+    </form>
+  </body>
+</html>
