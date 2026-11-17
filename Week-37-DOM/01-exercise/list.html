@@ -18,6 +18,9 @@
       const deleteBtn = document.getElementById("delete_button");
 
       addBtn.addEventListener("click", function () {
+        if (text.value.trim === "") {
+          return;
+        }
         const li = document.createElement("li");
         li.textContent = text.value;
         list.appendChild(li);
