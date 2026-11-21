@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM</title>
+  </head>
+  <body>
+    <input type="text" id="word" name="name" required placeholder="Type Here" />
+    <button id="add_button" type="button">Add</button>
+    <button id="delete_button" type="button">Delete</button>
+    <ol id="list"></ol>
+
+    <script>
+      const list = document.getElementById("list");
+      const text = document.getElementById("word");
+      const addBtn = document.getElementById("add_button");
+      const deleteBtn = document.getElementById("delete_button");
+
+      addBtn.addEventListener("click", function () {
+        if (text.value.trim === "") {
+          return;
+        }
+        const li = document.createElement("li");
+        li.textContent = text.value;
+        list.appendChild(li);
+        text.value = "";
+      });
+
+      deleteBtn.addEventListener("click", function () {
+        list.replaceChildren();
+      });
+    </script>
+  </body>
+</html>

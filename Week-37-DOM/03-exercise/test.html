@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="style.css" rel="stylesheet" />
+    <title>Employment form</title>
+  </head>
+  <body>
+    <div class="main-container">
+      <form action="https://www.dummyjson.com/test" method="POST">
+        <div class="inputs">
+          <label for="name">First Name</label>
+          <input type="text" name="user_name" id="name" required />
+
+          <label for="last_name">Last Name</label>
+          <input type="text" name="user_last_name" id="last_name" required />
+
+          <label for="email">Email</label>
+          <input type="email" name="user_email" id="email" required />
+
+          <label for="password">Password</label>
+          <input type="password" name="user_password" id="password" required />
+        </div>
+
+        <p>Do you currently have a job?</p>
+        <input type="radio" id="positive" name="job" value="Yes" />
+        <label for="positive">Yes</label>
+
+        <input type="radio" id="negative" name="job" value="No" />
+        <label for="negative">No</label>
+
+        <div class="inputs">
+          <input
+            type="text"
+            id="company"
+            name="company_name"
+            placeholder="Company name"
+            hidden
+          />
+        </div>
+        <button class="send_button" type="submit" id="send_button">Send</button>
+      </form>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>

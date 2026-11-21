@@ -1,0 +1,38 @@
+body{
+    background-color: antiquewhite;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+}
+.main-container{
+    background-color: white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 0.75rem solid rgb(77, 30, 147);
+    
+}
+
+.inputs{
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+
+.send_button{
+    font-size: small;
+    border-radius: 0.2rem;
+    border-style: dashed;
+    font-weight: bold;
+    padding: 0.50rem;
+    width: 75px;
+    margin-left: 1rem;
+
+}
